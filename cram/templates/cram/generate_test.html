@@ -1,0 +1,58 @@
+{% extends 'cram/base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header">
+            <h2 class="mb-0">Generate Test from Document</h2>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="id_title">
+                        <i class="fas fa-heading"></i> Test Title
+                    </label>
+                    {{ form.title }}
+                    <small class="form-text text-muted">Give your test a descriptive title</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="id_num_questions">
+                        <i class="fas fa-question-circle"></i> Number of Questions
+                    </label>
+                    {{ form.num_questions }}
+                    <small class="form-text text-muted">{{ form.num_questions.help_text }}</small>
+                </div>
+                
+                <div class="form-group">
+                    <label>
+                        <i class="fas fa-list-check"></i> Question Types
+                    </label>
+                    <div class="form-check">
+                        {{ form.question_types }}
+                    </div>
+                    <small class="form-text text-muted">{{ form.question_types.help_text }}</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="id_difficulty">
+                        <i class="fas fa-chart-line"></i> Difficulty Level
+                    </label>
+                    {{ form.difficulty }}
+                    <small class="form-text text-muted">{{ form.difficulty.help_text }}</small>
+                </div>
+                
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-magic"></i> Generate Test
+                    </button>
+                    <a href="{% url 'document_list' document.deck.id %}" class="btn btn-secondary">
+                        <i class="fas fa-times"></i> Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %} 

@@ -1,0 +1,46 @@
+{% extends 'cram/base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+            <h1 class="display-4 mb-4">Welcome to Cram!</h1>
+            <p class="lead mb-4">Your personal study assistant powered by AI.</p>
+            <p class="mb-4">Create flashcard decks, study efficiently, and track your progress.</p>
+            <a class="btn btn-primary btn-lg" href="{% url 'cram:deck_list' %}" role="button">
+                <i class="fas fa-layer-group"></i> View Decks
+            </a>
+        </div>
+    </div>
+
+    <div class="row mt-5 g-4">
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center p-4">
+                    <i class="fas fa-brain fa-3x feature-icon"></i>
+                    <h3 class="card-title h4">Smart Learning</h3>
+                    <p class="card-text">AI-powered flashcards that adapt to your learning style.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center p-4">
+                    <i class="fas fa-chart-line fa-3x feature-icon"></i>
+                    <h3 class="card-title h4">Track Progress</h3>
+                    <p class="card-text">Monitor your learning progress and identify areas for improvement.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center p-4">
+                    <i class="fas fa-file-upload fa-3x feature-icon"></i>
+                    <h3 class="card-title h4">Easy Upload</h3>
+                    <p class="card-text">Upload documents and generate flashcards automatically.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

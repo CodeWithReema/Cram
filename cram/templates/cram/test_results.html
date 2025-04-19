@@ -1,0 +1,57 @@
+{% extends 'cram/base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header">
+            <h2 class="mb-0">Test Results: {{ test.title }}</h2>
+            <small class="text-muted">Based on: {{ test.document.title }}</small>
+        </div>
+        <div class="card-body">
+            <div class="alert alert-info mb-4">
+                <h4 class="alert-heading">
+                    <i class="fas fa-chart-bar"></i> Your Score: {{ test.score }}/{{ test.questions.count }}
+                </h4>
+                <p class="mb-0">
+                    Percentage: {{ test.score|div:test.questions.count|mul:100|floatformat:1 }}%
+                </p>
+            </div>
+            
+            {% for question in test.questions.all %}
+            <div class="question mb-4 {% if question.is_correct %}border-success{% else %}border-danger{% endif %} border rounded p-3">
+                <h5 class="mb-3">
+                    <span class="badge {% if question.is_correct %}bg-success{% else %}bg-danger{% endif %} me-2">
+                        {{ forloop.counter }}
+                    </span>
+                    {{ question.question_text }}
+                </h5>
+                
+                <div class="answer-section">
+                    <p class="mb-1">
+                        <strong>Your Answer:</strong>
+                        <span class="{% if question.is_correct %}text-success{% else %}text-danger{% endif %}">
+                            {{ question.user_answer }}
+                        </span>
+                    </p>
+                    {% if not question.is_correct %}
+                    <p class="mb-0">
+                        <strong>Correct Answer:</strong>
+                        <span class="text-success">{{ question.correct_answer }}</span>
+                    </p>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+            
+            <div class="mt-4">
+                <a href="{% url 'document_list' test.document.deck.id %}" class="btn btn-primary">
+                    <i class="fas fa-arrow-left"></i> Back to Documents
+                </a>
+                <a href="{% url 'take_test' test.id %}" class="btn btn-secondary">
+                    <i class="fas fa-redo"></i> Retake Test
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

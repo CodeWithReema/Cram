@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ deck.title }} - Cram{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <div class="card mb-4">
+            <div class="card-body">
+                <h1 class="mb-2">{{ deck.title }}</h1>
+                {% if deck.description %}
+                <p class="lead text-muted">{{ deck.description }}</p>
+                {% endif %}
+                
+                <div class="d-flex gap-2 mb-3">
+                    <a href="{% url 'cram:study_deck' deck.id %}" class="btn btn-primary">
+                        <i class="fas fa-graduation-cap"></i> Study Deck
+                    </a>
+                    {% if deck.user == user %}
+                    <a href="{% url 'cram:deck_edit' deck.id %}" class="btn btn-outline-primary">
+                        <i class="fas fa-edit"></i> Edit Deck
+                    </a>
+                    <a href="{% url 'cram:card_create' deck.id %}" class="btn btn-success">
+                        <i class="fas fa-plus"></i> Add Card
+                    </a>
+                    <a href="{% url 'cram:deck_delete' deck.id %}" class="btn btn-outline-danger">
+                        <i class="fas fa-trash"></i> Delete Deck
+                    </a>
+                    {% endif %}
+                </div>
+
+                <div class="d-flex align-items-center text-muted">
+                    <span class="me-3">
+                        <i class="fas fa-layer-group"></i> {{ flashcards|length }} cards
+                    </span>
+                    <span>
+                        <i class="fas fa-user"></i> {{ deck.user.username }}
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="mb-3">Cards</h2>
+        {% if flashcards %}
+        <div class="list-group">
+            {% for card in flashcards %}
+            <div class="list-group-item">
+                <div class="d-flex w-100 justify-content-between align-items-center">
+                    <div>
+                        <h5 class="mb-1">{{ card.front }}</h5>
+                        <p class="mb-1 text-muted">{{ card.back }}</p>
+                    </div>
+                    {% if deck.user == user %}
+                    <div class="btn-group">
+                        <a href="{% url 'cram:card_edit' card.id %}" class="btn btn-sm btn-outline-primary">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <a href="{% url 'cram:card_delete' card.id %}" class="btn btn-sm btn-outline-danger">
+                            <i class="fas fa-trash"></i>
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="card">
+            <div class="card-body text-center py-5">
+                <i class="fas fa-layer-group mb-3" style="font-size: 3rem; color: var(--secondary-color);"></i>
+                <h4>No Cards Yet</h4>
+                <p class="text-muted">This deck doesn't have any cards yet.</p>
+                {% if deck.user == user %}
+                <a href="{% url 'cram:card_create' deck.id %}" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Add Your First Card
+                </a>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Study Tips</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    <li class="mb-3">
+                        <i class="fas fa-check-circle text-success me-2"></i>
+                        Review cards regularly for better retention
+                    </li>
+                    <li class="mb-3">
+                        <i class="fas fa-check-circle text-success me-2"></i>
+                        Use the spaced repetition system
+                    </li>
+                    <li class="mb-3">
+                        <i class="fas fa-check-circle text-success me-2"></i>
+                        Rate your knowledge honestly
+                    </li>
+                    <li>
+                        <i class="fas fa-check-circle text-success me-2"></i>
+                        Take breaks between study sessions
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

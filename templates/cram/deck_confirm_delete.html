@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete {{ deck.title }} - Cram{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="mb-0">Delete Deck</h2>
+            </div>
+            <div class="card-body">
+                <p>Are you sure you want to delete the deck "{{ deck.title }}"?</p>
+                <p class="text-danger">This action cannot be undone. All cards in this deck will be permanently deleted.</p>
+                
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-danger">Yes, delete this deck</button>
+                        <a href="{% url 'cram:deck_detail' deck.id %}" class="btn btn-secondary">No, take me back</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

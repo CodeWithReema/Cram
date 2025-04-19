@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+
+{% block title %}Study {{ deck.title }} - Cram{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <div>
+                    <h2 class="mb-0">Study: {{ deck.title }}</h2>
+                    <small class="text-muted">{{ deck.description }}</small>
+                </div>
+                <div class="d-flex align-items-center">
+                    <span class="badge bg-primary me-2">{{ cards|length }} cards remaining</span>
+                    <a href="{% url 'cram:deck_detail' deck.id %}" class="btn btn-outline-secondary btn-sm">
+                        <i class="fas fa-arrow-left"></i> Back to Deck
+                    </a>
+                </div>
+            </div>
+            <div class="card-body">
+                {% if cards %}
+                <div class="flashcard-container">
+                    <div id="flashcard" class="flashcard" onclick="flipCard()">
+                        <div id="front" class="text-center">
+                            <div class="card-content">
+                                <i class="fas fa-question-circle mb-3" style="font-size: 2rem; color: var(--primary-color);"></i>
+                                <h3 class="mb-0">{{ cards.0.front }}</h3>
+                            </div>
+                        </div>
+                        <div id="back" class="text-center" style="display: none;">
+                            <div class="card-content">
+                                <i class="fas fa-lightbulb mb-3" style="font-size: 2rem; color: var(--warning-color);"></i>
+                                <h3 class="mb-0">{{ cards.0.back }}</h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="controls" class="text-center mt-4" style="display: none;">
+                        <h4 class="mb-3">How well did you know this?</h4>
+                        <div class="btn-group">
+                            <button class="btn btn-danger" onclick="rateCard(1)">
+                                <i class="fas fa-times"></i> Hard
+                            </button>
+                            <button class="btn btn-warning" onclick="rateCard(2)">
+                                <i class="fas fa-check"></i> Medium
+                            </button>
+                            <button class="btn btn-success" onclick="rateCard(3)">
+                                <i class="fas fa-star"></i> Easy
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <div class="text-center py-5">
+                    <i class="fas fa-trophy mb-3" style="font-size: 4rem; color: var(--warning-color);"></i>
+                    <h3>Congratulations!</h3>
+                    <p class="lead">You've completed all cards in this deck.</p>
+                    <div class="mt-4">
+                        <a href="{% url 'cram:deck_detail' deck.id %}" class="btn btn-primary">
+                            <i class="fas fa-arrow-left"></i> Back to Deck
+                        </a>
+                        <a href="{% url 'cram:study_deck' deck.id %}" class="btn btn-outline-primary">
+                            <i class="fas fa-redo"></i> Study Again
+                        </a>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    let isFlipped = false;
+    const cards = {{ cards|safe }};
+    let currentCardIndex = 0;
+
+    function flipCard() {
+        if (!isFlipped) {
+            document.getElementById('front').style.display = 'none';
+            document.getElementById('back').style.display = 'block';
+            document.getElementById('controls').style.display = 'block';
+            document.getElementById('flashcard').classList.add('flip-card');
+            isFlipped = true;
+        }
+    }
+
+    function rateCard(rating) {
+        // Here you would typically send the rating to the server
+        // For now, we'll just move to the next card
+        currentCardIndex++;
+        if (currentCardIndex < cards.length) {
+            document.getElementById('front').innerHTML = `
+                <div class="card-content">
+                    <i class="fas fa-question-circle mb-3" style="font-size: 2rem; color: var(--primary-color);"></i>
+                    <h3 class="mb-0">${cards[currentCardIndex].front}</h3>
+                </div>`;
+            document.getElementById('back').innerHTML = `
+                <div class="card-content">
+                    <i class="fas fa-lightbulb mb-3" style="font-size: 2rem; color: var(--warning-color);"></i>
+                    <h3 class="mb-0">${cards[currentCardIndex].back}</h3>
+                </div>`;
+            document.getElementById('front').style.display = 'block';
+            document.getElementById('back').style.display = 'none';
+            document.getElementById('controls').style.display = 'none';
+            document.getElementById('flashcard').classList.remove('flip-card');
+            isFlipped = false;
+        } else {
+            window.location.reload(); // Reload to show completion message
+        }
+    }
+</script>
+{% endblock %} 

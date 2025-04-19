@@ -1,0 +1,74 @@
+{% extends 'cram/base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header">
+            <h2 class="mb-0">{{ test.title }}</h2>
+            <small class="text-muted">Based on: {{ test.document.title }}</small>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                {% for question in test.questions.all %}
+                <div class="question mb-4">
+                    <h5 class="mb-3">
+                        <span class="badge bg-primary me-2">{{ forloop.counter }}</span>
+                        {{ question.question_text }}
+                    </h5>
+                    
+                    {% if question.question_type == 'MC' %}
+                        <div class="options">
+                            {% for option in question.options %}
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" 
+                                       name="question_{{ question.id }}" 
+                                       id="option_{{ question.id }}_{{ forloop.counter0 }}"
+                                       value="{{ option }}">
+                                <label class="form-check-label" for="option_{{ question.id }}_{{ forloop.counter0 }}">
+                                    {{ option }}
+                                </label>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    {% elif question.question_type == 'TF' %}
+                        <div class="options">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" 
+                                       name="question_{{ question.id }}" 
+                                       id="true_{{ question.id }}"
+                                       value="True">
+                                <label class="form-check-label" for="true_{{ question.id }}">
+                                    True
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" 
+                                       name="question_{{ question.id }}" 
+                                       id="false_{{ question.id }}"
+                                       value="False">
+                                <label class="form-check-label" for="false_{{ question.id }}">
+                                    False
+                                </label>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="form-group">
+                            <input type="text" class="form-control" 
+                                   name="question_{{ question.id }}"
+                                   placeholder="Enter your answer">
+                        </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+                
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-check-circle"></i> Submit Test
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %} 
