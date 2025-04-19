@@ -12,11 +12,11 @@
                         {% if flashcards %}
                             <div class="flashcard" id="current-card">
                                 <div class="flashcard-inner">
-                                    <div class="flashcard-front">
+                                    <div id="flashcard-front" class="flashcard-front">
                                         <h4 class="card-title">Front</h4>
                                         <p class="card-text">{{ flashcards.0.front }}</p>
                                     </div>
-                                    <div class="flashcard-back">
+                                    <div id="flashcard-back" class="flashcard-back">
                                         <h4 class="card-title">Back</h4>
                                         <p class="card-text">{{ flashcards.0.back }}</p>
                                     </div>
@@ -104,9 +104,21 @@ document.addEventListener('DOMContentLoaded', function() {
         progressBar.style.width = ((currentIndex + 1) / flashcards.length * 100) + '%';
     }
 
+    function setFlashcardVisibility(front, back) {
+        document.getElementById("flashcard-front").style.visibility = front;
+        document.getElementById("flashcard-back").style.visibility = back;
+    }
+
     flipButton.addEventListener('click', function() {
         flashcard.classList.toggle('flipped');
         isFlipped = !isFlipped;
+
+        if (isFlipped) {
+            setFlashcardVisibility("hidden", "visible")
+        }
+        else {
+            setFlashcardVisibility("visible", "hidden")
+        }
     });
 
     nextButton.addEventListener('click', function() {
@@ -116,6 +128,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         currentIndex = (currentIndex + 1) % flashcards.length;
         updateCard();
+        setFlashcardVisibility("visible", "hidden")
     });
 
     // Initialize first card
