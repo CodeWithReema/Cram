@@ -1,6 +1,6 @@
 # Cram
 
-Cram is a Django-based study platform designed for students to enhance their learning through AI-generated resources. With free account registration, students can upload study material and receive personalized flashcards, quizzes, and other memory tools powered by the GeminiAI API.
+Cram is a Django-based study platform designed for students to enhance their learning through AI-generated resources. The application is currently under construction. With free account registration, students can upload study material and receive personalized flashcards, quizzes, and other memory tools powered by the GeminiAI API.
 
 ## Features
 
